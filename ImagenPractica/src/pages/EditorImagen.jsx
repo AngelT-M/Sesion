@@ -7,65 +7,61 @@ import { useState } from "react";
 
 
 export default function EditorImagen(){
+    const [imagenOriginal, setImagenOriginal] = useState('');
+    const [imagenProcesada, setImagenProcesda] = useState('');
 
-    const [imagenOriginal, setImagenOriginal]  = useState(null);
-    const [imagenProcesada, setImagenProcesada] = useState(null);
-
-    const [rotarcion, setRotacion] = useState(0);
-    const [volteoH, setVolteroH] = useState(false);
-    const [volteroV, setVoleteoV] = useState(false);
+    const [rotacion, setRotacion] = useState(0);
+    const [volteoH, setVolteoH] = useState(false);
+    const [volteoV, setVolteoV] = useState(false);
     const [filtroActivo, setFiltroActico] = useState('Original');
-
+    
     const [brillo, setBrillo] = useState(100);
     const [contraste, setContraste] = useState(100);
-    const [saturacio, setSaturacion] = useState(100);
-
-    const [galeria, setGaleria ]  = useState([]);
-
-    function rotar(grados){
-        setRotacion(prev =>(prev+grados+360)%360);
-    }
-    function volteoHorizontal(){
-        setVoleteoV(prev => !prev);
-    }    
-    function volteoVertical(){
-        setVoleteoV(prev => !prev)
-    }
-
-    function reestablecer(){
-        setRotacion = useState(0);
-        setVoleteoV = useState(false);
-        setVolteroH = useState(false);
-        setFiltroActico = useState('Original');
-
-        setBrillo = useState(100);
-        setContraste = useState(100);
-        setSaturacion = useState(100);
+    const [saturacion, setSaturacion] = useState(100);
     
+    function rotar(grados){
+        setRotacion(prev => (prev+grados+360)%360);
+    }
+    function volteoHorizonal() {
+        setVolteoH(prev => !prev);
+    }
+    function volteoVertical(){
+        setVolteoV(prev => !prev)
     }
 
+    function reestablecer() {
+        setRotacion = useState(0);
+        setVolteoH = useState(false);
+        setVolteoV = useState(false);
+        filtroActivo = useState('Original');
+    
+        setBrillo = useState(100);
+        setContraste = useState(100); 
+        setSaturacion = useState(100);
+    }
 
     return (
         <div className="app">
             <Barra></Barra>
             <main className="editor-layaut">
                 <CargarFotografia 
-                onImagenCargada={setImagenOriginal}
+                onImagenCargada ={setImagenOriginal}
                 > </CargarFotografia>
                 
                 <VistaPrevia
                 imagenOriginal={imagenOriginal}
-                rotacion={rotarcion}
+
+                rotacion={rotacion}
                 volteoH={volteoH}
-                volteoV={volteroV}
+                volteoV={volteoV}
                 filtroActivo={filtroActivo}
 
                 brillo={brillo}
                 contraste={contraste}
-                saturacio={saturacio}
-
-                onImagenProcesada={setImagenProcesada}
-
+                saturacion={saturacion}
+                onImagenProcesada={setImagenProcesda}
+                
+               
                 ></VistaPrevia>
                 
                 <HerramientasEdicion></HerramientasEdicion>
