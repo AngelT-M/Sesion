@@ -1,0 +1,38 @@
+export const tareasPrueba = [
+  {
+    id_tarea: 1,
+    titulo: "Diseño makups",
+    descripcion: "Crear las pantallas principlas en figma",
+    categoria: "Diseño",
+    prioridad: "ALTA",
+    estado: "PENDIENTE",
+    usuario: "Erik Batz",
+  },
+  {
+    id_tarea: 2,
+    titulo: "Configuracion de autenticacion",
+    descripcion: "Implementacion login con JHT",
+    categoria: "Desarrollo",
+    prioridad: "MEDIA",
+    estado: "EN_PROCESO",
+    usuario: "Miguel Tomas",
+  },
+  {
+    id_tarea: 3,
+    titulo: "Escribir pruebas unitarias",
+    descripcion: "Coberturar del modulo del usuario",
+    categoria: "QA",
+    prioridad: "BAJA",
+    estado: "COMPLETA",
+    usuario: "Miguel Angel Tomas",
+  },
+  {
+    id_tarea: 4,
+    titulo: "Creacion Proyecto",
+    descripcion: "Creacion de la maqueta",
+    categoria: "Desarrollo",
+    prioridad: "MEDIA",
+    estado: "EN_PROCESO",
+    usuario: "Erick Batz",
+  },
+];

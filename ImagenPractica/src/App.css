@@ -1,0 +1,73 @@
+body{
+    margin: 0;
+}
+
+
+.barra{
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.logo{
+    font-size: 1.5rem ;
+}
+.buscador{
+    width: 45%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.buscador label{
+    background-color: white;
+    padding: 0.2rem;
+    border: 1px solid black;
+    border-radius: 10px 0px 0px 10px;
+}
+.buscador label:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.buscador input{
+    width: 50%;
+    padding: 0.3rem;
+    border:  1px solid black;
+    border-radius:  0px 10px 10px 0px;
+}
+.buscador input:focus{
+    outline: none;
+}
+.links{
+    margin: 0 1rem  0 0 ;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.bus{
+    margin: 1rem;
+}
+
+.editor-layaut{
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+.panel{
+    background: white;
+    border: 1px solid  rgb(192, 192, 192);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+
+}
+.btn-primario{
+    background-color: rgba(81, 197, 106, 0.2);
+    border:none;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+.btn-primario:hover{
+    background-color: rgba(81, 197, 106, 1);
+}
+
