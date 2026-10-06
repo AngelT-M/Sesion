@@ -1,20 +1,28 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
-const FILSTROS_CSS = {
+const FILTROS_CSS = {
     Original: '',
-    Gris: 'graysacale(100%)',
+    Gris: 'grayscale(100%)',
     Sepia: 'sepia(100%)',
-    'Blanco Y Negro': 'grayscale(100%) contrast(120%)',
+    'Blanco y negro': 'grayscale(100%) contrast(120%)',
     Desenfoque: 'blur(4px)'
 }
 
-
 export default function VistaPrevia({imagenOriginal, rotacion, volteoH, volteoV, filtroActivo, brillo, contraste, saturacion, onImagenProcesada}){
-    
+
     const canvasRef = useRef(null);
 
-    
-  
+    useEffect(()=>{
+        if(!imagenOriginal)return;
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+
+
+    })
+
     return(
         <section className="panel">
             <h3>Vistra previa</h3>

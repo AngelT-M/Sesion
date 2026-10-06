@@ -1,0 +1,63 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color: rgba(1, 1, 1, 0.1);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.principal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.barra{
+    background-color: rgb(104, 104, 104);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.barra div{
+    color: white;
+    margin: 0.5rem;
+}
+.btn-primario{
+    color: white;
+    background-color: rgba(66, 158, 211, 0.6);
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border:  none;
+    border-radius: 8px;
+}
+.btn-primario:hover{
+    background-color: rgba(66, 158, 211, 1);
+}
+
+
+.paginacion{
+   display: flex;
+   flex-direction: row;
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background-color: white;
+    width: 90%;
+    justify-content: center;
+
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+}
+.fotos-cont{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+}
+
+.tarjeta{
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background-color: white;
+
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+}
