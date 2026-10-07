@@ -1,10 +1,9 @@
 import { urlMiniatura } from "../api/picsum";
-import DetalleFoto from "./DetalleFoto";
 
 export default function TarjetaFoto({foto, onSeleccionar}) {
     return (
         <button
-        className="tarjeta"
+        className="tarjeta detalle-foto"
         onClick={()=>onSeleccionar(foto.id)}
         >
         <img

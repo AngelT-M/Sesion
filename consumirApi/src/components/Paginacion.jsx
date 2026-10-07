@@ -2,7 +2,7 @@
 
 export default function Paginacion({pagina, oncambiar, deshabilitar}) {
     return (
-        <section className="paginacion">
+        <section className="paginacion ">
             <button
             className="btn-primario"
             onClick={()=>oncambiar(pagina-1)}

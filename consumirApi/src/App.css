@@ -18,6 +18,7 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    color: white;
 }
 .barra div{
     color: white;
@@ -35,25 +36,85 @@ body{
     background-color: rgba(66, 158, 211, 1);
 }
 
+.barra-busc{
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.barra-busc label{
+    background-color: white;
+    color: black;
+    padding: 0.1rem;
+    border: black solid 1px;
+    border-radius: 5px 0px 0px 5px;
+}
+.barra-busc input{
+    width: 80%;
+    
+    background-color: white;
+    color: black;
+    padding: 0.3rem;
+    border: none;
+     border-radius: 0px 5px 5px 0px;
+}
 
 .paginacion{
-   display: flex;
-   flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    justify-content: center;
+    padding: 0.5rem;
+}
+.detalle-foto{
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: auto;
     margin-top: 1rem;
     border-radius: 8px;
     background-color: white;
-    width: 90%;
     justify-content: center;
+    padding: 0.5rem;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+    transform: trasform 0.8s ease;
 
+    margin-bottom: 1rem;
+}
+.modal{
+    width: 100%;
+}
+.detalle-foto:hover{
+    transform: translate(-5px, -1px) scale(0.99);
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.7) ;
+}
+
+.cont{
+    width: 95%;
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background-color: white;
+    justify-content: center;
+    padding: 0.5rem;
     box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
 }
+
 .fotos-cont{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr ;
+    grid-template-columns: repeat(4, 1fr) ;
+    margin-top: 1rem;
+
+    
 }
 
 .tarjeta{
+    display: flex;
+    flex-direction: column;
     margin: auto;
     margin-top: 1rem;
     border-radius: 8px;
