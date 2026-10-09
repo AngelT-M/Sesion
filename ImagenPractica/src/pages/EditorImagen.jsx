@@ -7,36 +7,35 @@ import { useState } from "react";
 
 
 export default function EditorImagen(){
-    const [imagenOriginal, setImagenOriginal] = useState('');
-    const [imagenProcesada, setImagenProcesda] = useState('');
+    const [imagenOriginal, setImagenOriginal ] = useState(null);
+    const [imagenProcesada, setImagenProcesada] = useState(null);
 
-    const [rotacion, setRotacion] = useState(0);
+    const [rotar, setRotar] = useState(0);
     const [volteoH, setVolteoH] = useState(false);
     const [volteoV, setVolteoV] = useState(false);
-    const [filtroActivo, setFiltroActico] = useState('Original');
-    
+    const [filtroActivo, setFiltroActivo] = useState('Original');
+
     const [brillo, setBrillo] = useState(100);
     const [contraste, setContraste] = useState(100);
     const [saturacion, setSaturacion] = useState(100);
-    
-    function rotar(grados){
-        setRotacion(prev => (prev+grados+360)%360);
+
+    function rotacion(grados){
+        setRotar = (prev=>(prev+grados+360)%360);
     }
-    function volteoHorizonal() {
+    function volteoHorizontal(){
         setVolteoH(prev => !prev);
     }
     function volteoVertical(){
-        setVolteoV(prev => !prev)
+        setVolteoV(prev => !prev);
     }
-
-    function reestablecer() {
-        setRotacion = useState(0);
+    function reestablecer(){
+        setRotar = useState(0);
         setVolteoH = useState(false);
         setVolteoV = useState(false);
-        filtroActivo = useState('Original');
-    
+        setFiltroActivo = useState('Original');
+
         setBrillo = useState(100);
-        setContraste = useState(100); 
+        setContraste = useState(100);
         setSaturacion = useState(100);
     }
 
@@ -45,13 +44,12 @@ export default function EditorImagen(){
             <Barra></Barra>
             <main className="editor-layaut">
                 <CargarFotografia 
-                onImagenCargada ={setImagenOriginal}
+                onIMagenCargada = {setImagenOriginal}
                 > </CargarFotografia>
                 
                 <VistaPrevia
                 imagenOriginal={imagenOriginal}
-
-                rotacion={rotacion}
+                rotar={rotar}
                 volteoH={volteoH}
                 volteoV={volteoV}
                 filtroActivo={filtroActivo}
@@ -59,9 +57,9 @@ export default function EditorImagen(){
                 brillo={brillo}
                 contraste={contraste}
                 saturacion={saturacion}
-                onImagenProcesada={setImagenProcesda}
+
+                onImagenProcesada={setImagenProcesada}
                 
-               
                 ></VistaPrevia>
                 
                 <HerramientasEdicion></HerramientasEdicion>
