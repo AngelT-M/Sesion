@@ -5,12 +5,11 @@ import HerramientasEdicion from "../components/HerramientasEdicion";
 import { useState } from "react";
 
 
-
 export default function EditorImagen(){
-    const [imagenOriginal, setImagenOriginal ] = useState(null);
+    const [imagenOriginal, setImagenOriginal] = useState(null);
     const [imagenProcesada, setImagenProcesada] = useState(null);
 
-    const [rotar, setRotar] = useState(0);
+    const [rotacion, setRotacion] = useState(0);
     const [volteoH, setVolteoH] = useState(false);
     const [volteoV, setVolteoV] = useState(false);
     const [filtroActivo, setFiltroActivo] = useState('Original');
@@ -19,24 +18,25 @@ export default function EditorImagen(){
     const [contraste, setContraste] = useState(100);
     const [saturacion, setSaturacion] = useState(100);
 
-    function rotacion(grados){
-        setRotar = (prev=>(prev+grados+360)%360);
+    function rotar(grados){
+        setRotacion(prev => (prev+grados+360)%360);
     }
-    function volteoHorizontal(){
-        setVolteoH(prev => !prev);
+    function volteoHorizontal() {
+        setVolteoH(prev =>!prev);
     }
     function volteoVertical(){
-        setVolteoV(prev => !prev);
+        setVolteoV(prev =>!prev);
     }
-    function reestablecer(){
-        setRotar = useState(0);
-        setVolteoH = useState(false);
-        setVolteoV = useState(false);
-        setFiltroActivo = useState('Original');
 
-        setBrillo = useState(100);
-        setContraste = useState(100);
-        setSaturacion = useState(100);
+    function reestablecer(){
+        setRotacion(0);
+        setVolteoH(false);
+        setVolteoV(false);
+        setFiltroActivo('Original')
+
+        setBrillo(100);
+        setContraste(100);
+        setSaturacion(100);
     }
 
     return (
@@ -44,12 +44,12 @@ export default function EditorImagen(){
             <Barra></Barra>
             <main className="editor-layaut">
                 <CargarFotografia 
-                onIMagenCargada = {setImagenOriginal}
+                onImagenCargada = {setImagenOriginal}
                 > </CargarFotografia>
                 
                 <VistaPrevia
                 imagenOriginal={imagenOriginal}
-                rotar={rotar}
+                rotacion={rotacion}
                 volteoH={volteoH}
                 volteoV={volteoV}
                 filtroActivo={filtroActivo}
