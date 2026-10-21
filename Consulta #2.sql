@@ -1,4 +1,4 @@
-CREATE DATABASE tableroKanvan;
+CREATE DATABASE if NOT EXISTS  tableroKanvan;
 USE tableroKanvan;
 
 
@@ -51,3 +51,17 @@ ALTER TABLE tareas
 	
 ALTER TABLE tareas
 	ADD usuario VARCHAR(50);
+	
+	
+INSERT tareas()
+	VALUES(1,"tarea1","tareatarea",1,"Alta","COMPLETA","Luis");
+	
+	
+	
+INSERT tareas()
+	VALUES(2,"tarea2","tareatarea2",2,"Media","PEDI","Angel");
+	
+	
+UPDATE tareas
+	SET estado = "PENDIENTE"	
+	WHERE tarea_id = 2;

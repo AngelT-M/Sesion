@@ -1,0 +1,109 @@
+:root{
+  --colorFondo: rgba(0,0,0, 0.05);
+  --colorPrimario: #f0eae0;
+  --colorSecundario: #B85C38;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  height: 100vh;
+  background-color: var(--colorFondo);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+.barra{
+  background-color: var(--colorSecundario);
+  color: var(--colorPrimario);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  box-shadow: 1px 2px 4px rgba(128, 128, 128, 0.2);
+
+}
+.logo{
+  font-size: 1.5rem;
+}
+.lin{
+  display: flex;
+  flex-direction: row;
+}
+.link{
+  text-decoration: none;
+  text-decoration: none;
+  color: var(--colorPrimario);
+  margin: 0.5rem;
+}
+.registro{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.registro a{
+  margin: 0.1rem;
+  padding: 0.3rem;
+  text-decoration: none;
+  color: var(--colorPrimario);
+}
+.btn{
+  color: var(--colorPrimario);
+  border: 1px solid var(--colorPrimario);
+  border-radius: 5px;
+}
+.btn:hover{
+  background-color: var(--colorPrimario);
+  color: var(--colorSecundario);
+ 
+}
+
+.secciones{
+  height: 500px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-rows: 1fr ;
+  align-items: stretch;
+  gap: 1rem;
+}
+.sec{
+  background-color: rgba(240, 234, 224, 0.2);
+  border: 1px solid  rgba(184, 92, 56, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 8px 5px 8px rgba(184, 92, 56, 0.2);
+  transition: all 100ms ease-in-out;
+}
+
+.sec:hover{
+  transform: scale(1.005) ;
+}
+
+.visualizar canvas{
+  
+  max-height: 400px;
+}
+
+.imagen{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px dashed var(--colorSecundario) ;
+}
+
+.btn2{
+  background-color: var(--colorSecundario);
+  margin: 0px 10px 10px 0px ;
+  padding: 0.2rem;
+  border-radius: 8px;
+}
