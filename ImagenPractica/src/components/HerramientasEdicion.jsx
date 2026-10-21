@@ -1,3 +1,5 @@
+const FILTROS = ['Original', 'Gris','Sepia','Blanco y Negro', 'Desenfoque']
+
 export default function HerramientasEdicion(){
 
 
@@ -11,11 +13,7 @@ export default function HerramientasEdicion(){
                 <div className="grupo">
                     <p>filtros</p>
                     <div className="filtro-grid">
-                        <button>sepia</button>
-                        <button>blaco y negro</button>
-                        <button>as</button>
-                        <button>as</button>
-                        <button>as</button>
+                        {}
                     </div>
                 </div>
 

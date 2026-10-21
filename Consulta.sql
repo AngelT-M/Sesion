@@ -1,0 +1,34 @@
+CREATE DATABASE if NOT EXISTS tablero_kanban;
+USE tablero_kanban;
+
+CREATE TABLE categorias(
+	categoria_id SMALLINT AUTO_INCREMENT PRIMARY KEY,
+	nom_categoria VARCHAR(50) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE usuarios(
+	usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+	nom_usuario VARCHAR(100) NOT NULL,
+	fecha_nac DATE NOT NULL ,
+	numero VARCHAR(20) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
+);
+
+
+CREATE TABLE tareas(
+	tarea_id INT AUTO_INCREMENT PRIMARY KEY,
+	titulo VARCHAR(100) NOT NULL,
+	descripcion TEXT NOT NULL,
+	categoria_id SMALLINT NOT NULL,
+	usuario_id INT NOT NULL,
+	prioridad ENUM("BAJA","MEDIA","ALTA") NOT NULL DEFAULT "MEDIA",
+	estado ENUM("PENDIENTE","EN_PROCESO","COMPLETADA") NOT NULL DEFAULT "PENDIENTE",
+	odren INT NOT NULL DEFAULT 0,
+	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+

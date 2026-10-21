@@ -1,39 +1,25 @@
 import TarjetaTarea from "./TarjetaTarea";
 
 export default function ColumnaKanban({ titulo, estado, color, tareas, onVerTarea, onSoltarTarea }) {
-  function manejarDragOver(evento) {
-    evento.preventDefault();
-  }
-
-  function manejarDrop(evento) {
-    const idTarea = evento.dataTransfer.getData("text/plain");
-    onSoltarTarea(Number(idTarea), estado);
-  }
-
   return (
     <div
-      className="columna-kanban"
-      onDragOver={manejarDragOver}
-      onDrop={manejarDrop}
+      className="columna"
+      onDragOver={e => e.preventDefault()}                           // Necesario para aceptar el drop
+      onDrop={e => onSoltarTarea(Number(e.dataTransfer.getData('text/plain')), estado)}
     >
+      {/* Cabecera de la columna con color lateral */}
       <div className="columna-header" style={{ borderTop: `4px solid ${color}` }}>
         <h3>{titulo}</h3>
-        <span className="contador">{tareas.length}</span>
+        <span className="columna-contador">{tareas.length}</span>
       </div>
 
-      <div className="columna-body">
-        {tareas.length === 0 ? (
-          <p className="plasholder">Sin Tareas Todavia</p>
-        ) : (
-          tareas.map((tarea) => (
-            <TarjetaTarea
-              key={tarea.id_tarea}
-              tarea={tarea}
-              onVerTarea={onVerTarea}
-            />
-          ))
-        )}
-      </div>
+      {/* Tarjetas */}
+      {tareas.length === 0
+        ? <p className="columna-vacia">Sin tareas</p>
+        : tareas.map(t => (
+          <TarjetaTarea key={t.tarea_id} tarea={t} onVerTarea={onVerTarea} />
+        ))
+      }
     </div>
   );
 }

@@ -1,23 +1,136 @@
+import { useState } from "react";
+export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [], onCerrar, onActualizar }) {
+    const [editando, setEditando] = useState(false);
+    const [titulo, setTitulo] = useState(tarea.titulo);
+    const [descripcion, setDescripcion] = useState(tarea.descripcion);
+    const [categoriaId, setCategoriaId] = useState(
+        String(tarea.categoria_id ?? categorias[0]?.categoria_id ?? '')
+    );
 
-export default function ModalTarjetaTarea({tarea}){
-    
-
-    return(
-        <div className="modal-overlay" >
-            <div className="modal-contenido">
-                <div className="contenido-titulo">
-                <h1>DATOS TAREA</h1>
-                </div>
-                <div className="tarjeta-header">
-                    <h4>{tarea.titulo}</h4>
-                </div>
-                <p className="tarjeta_descripcion">Decripcion: {tarea.descripcion}</p>
-                <p className="">Prioridad: {tarea.prioridad}</p>
-                <p className="">Estado: {tarea.estado}</p>
-                <p className="">Usuario: {tarea.usuario}</p>
-            </div>
-        </div>
+    const usuarioActual = usuarios.find((u) => u.nom_usuario === tarea.nom_usuario);
+    const [usuarioId, setUsuarioId] = useState(
+        String(tarea.usuario_id ?? usuarioActual?.usuario_id ?? usuarios[0]?.usuario_id ?? '1')
     );
 
 
+    const [prioridad, setPrioridad] = useState(tarea.prioridad);
+    const [guardando, setGuardando] = useState(false);
+    async function manejarGuardar(e) {
+        e.preventDefault();
+        if (!titulo.trim() || guardando) return;
+        setGuardando(true);
+        try {
+            await onActualizar(tarea.tarea_id, {
+                titulo: titulo.trim(),
+                descripcion: descripcion.trim(),
+                categoria_id: Number(categoriaId),
+                usuario_id: Number(usuarioId),
+                prioridad: prioridad,
+            });
+        } finally {
+            setGuardando(false);
+        }
+    }
+    return (
+        <div className="modal-overlay" onClick={onCerrar}>
+            <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
+                <button onClick={onCerrar} className="btn-cerrar">✖</button>
+                <div className="contenido-titulo">
+                    <h1>{editando ? "EDITAR TAREA" : "DATOS TAREA"}</h1>
+                </div>
+                {editando ? (
+                    /* MODO EDICIÓN */
+                    <form onSubmit={manejarGuardar}>
+                        <label htmlFor="edit-titulo">Título</label>
+                        <input
+                            id="edit-titulo"
+                            value={titulo}
+                            onChange={(e) => setTitulo(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="edit-descripcion">Descripción</label>
+                        <textarea
+                            id="edit-descripcion"
+                            value={descripcion}
+                            onChange={(e) => setDescripcion(e.target.value)}
+                        />
+                        <label htmlFor="edit-categoria">Categoría</label>
+                        <select
+                            id="edit-categoria"
+                            value={categoriaId}
+                            onChange={(e) => setCategoriaId(e.target.value)}
+                        >
+                            {categorias.map((cat) => (
+                                <option key={cat.categoria_id} value={cat.categoria_id}>
+                                    {cat.nom_categoria}
+                                </option>
+                            ))}
+                        </select>
+                        <label htmlFor="edit-usuario">Asignar a Usuario</label>
+                        <select
+                            id="edit-usuario"
+                            value={usuarioId}
+                            onChange={(e) => setUsuarioId(e.target.value)}
+                        >
+                            {usuarios.map((u) => (
+                                <option key={u.usuario_id} value={u.usuario_id}>
+                                    {u.nom_usuario}
+                                </option>
+                            ))}
+                        </select>
+
+                        <label htmlFor="edit-prioridad">Prioridad</label>
+                        <select
+                            id="edit-prioridad"
+                            value={prioridad}
+                            onChange={(e) => setPrioridad(e.target.value)}
+                        >
+                            <option value="ALTA">Alta</option>
+                            <option value="MEDIA">Media</option>
+                            <option value="BAJA">Baja</option>
+                        </select>
+                        <div className="modal-acciones" style={{ marginTop: '16px' }}>
+                            <button
+                                type="button"
+                                className="btn btn-cerrar"
+                                onClick={() => setEditando(false)}
+                                disabled={guardando}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                type="submit"
+                                className="btn btn-primario"
+                                disabled={guardando}
+                            >
+                                {guardando ? "Guardando..." : "Guardar Cambios"}
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    /* MODO LECTURA */
+                    <>
+                        <div className="tarjeta-header">
+                            <h4>{tarea.titulo}</h4>
+                        </div>
+                        <p className="tarjeta_descripcion">Descripción: {tarea.descripcion}</p>
+                        <p><strong>Categoría:</strong> {tarea.nom_categoria || 'Sin categoría'}</p>
+                        <p><strong>Prioridad:</strong> {tarea.prioridad}</p>
+                        <p><strong>Estado:</strong> {tarea.estado}</p>
+                        <p><strong>Usuario:</strong> {tarea.nom_usuario || 'Sin asignar'}</p>
+                        <p><strong>Fecha de Creación:</strong> {tarea.fecha_creacion || 'No disponible'}</p>
+                        <div className="modal-acciones" style={{ marginTop: '16px' }}>
+                            <button
+                                type="button"
+                                className="btn btn-primario"
+                                onClick={() => setEditando(true)}
+                            >
+                                ✏️ Editar Tarea
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    );
 }

@@ -1,37 +1,30 @@
-
 import ColumnaKanban from "./ColumnaKanban";
 
-export default function Tablero({ tareas, onVerTarea, onSoltarTarea }) {
-  const pendiente = tareas.filter(t => t.estado === "PENDIENTE");
-  const enProceso = tareas.filter(t => t.estado === "EN_PROCESO");
-  const completado = tareas.filter(t => t.estado === "COMPLETA");
+// Orden de prioridad para ordenar tarjetas dentro de cada columna
+const PESO = { ALTA: 1, MEDIA: 2, BAJA: 3 };
+const porPrioridad = (a, b) =>
+  (PESO[a.prioridad] ?? 4) - (PESO[b.prioridad] ?? 4) || (a.orden ?? 0) - (b.orden ?? 0);
 
+const COLUMNAS = [
+  { titulo: 'Pendiente', estado: 'PENDIENTE', color: '#2563eb' },
+  { titulo: 'En Proceso', estado: 'EN_PROCESO', color: '#f59e08' },
+  { titulo: 'Completadas', estado: 'COMPLETADA', color: '#16a34a' },
+];
+
+export default function Tablero({ tareas, onVerTarea, onSoltarTarea }) {
   return (
     <div className="tablero">
-      <ColumnaKanban 
-        titulo="Pendiente" 
-        estado="PENDIENTE" 
-        color="#2563eb" 
-        tareas={pendiente} 
-        onVerTarea={onVerTarea}
-        onSoltarTarea={onSoltarTarea} />
-        
-      <ColumnaKanban 
-        titulo="En proceso" 
-        estado="EN_PROCESO" 
-        color="#f59e08" 
-        tareas={enProceso} 
-        onVerTarea={onVerTarea}
-        onSoltarTarea={onSoltarTarea}/>
-
-      <ColumnaKanban 
-        titulo="Completadas" 
-        estado="COMPLETA" 
-        color="#16a34a" 
-        tareas={completado} 
-        onVerTarea={onVerTarea}
-        onSoltarTarea={onSoltarTarea}/>
-
+      {COLUMNAS.map(col => (
+        <ColumnaKanban
+          key={col.estado}
+          titulo={col.titulo}
+          estado={col.estado}
+          color={col.color}
+          tareas={tareas.filter(t => t.estado === col.estado).sort(porPrioridad)}
+          onVerTarea={onVerTarea}
+          onSoltarTarea={onSoltarTarea}
+        />
+      ))}
     </div>
   );
 }
