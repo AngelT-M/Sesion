@@ -8,7 +8,9 @@ async function peticion(ruta, { metodo = 'GET', datos } = {}) {
     method: metodo,
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: datos ? JSON.stringify(datos) : undefined,
-  }).catch(() => { throw new Error('No se pudo conectar con el servidor'); });
+  }).catch(() => { 
+    throw new Error('No se pudo conectar con el servidor'); 
+  });
 
   const json = await respuesta.json().catch(() => null);
 
@@ -24,17 +26,18 @@ async function peticion(ruta, { metodo = 'GET', datos } = {}) {
 
 // ── Tareas ────────────────────────────────────────────────────────────
 export const tareaApi = {
-  listar: () => peticion('tareas'),
+  mostrar: () => peticion('tareas'),
   crear: (datos) => peticion('tareaCrear', { metodo: 'POST', datos }),
   actualizar: (id, datos) => peticion(`tareaActualizar/${id}`, { metodo: 'PUT', datos }),
+  eliminar: (id) => peticion(`tareaEliminar/${id}`, { metodo: 'DELETE' }),
 };
 
 // ── Categorías ────────────────────────────────────────────────────────
 export const categoriaApi = {
-  listar: () => peticion('categorias'),
+  mostrar: () => peticion('categorias'),
 };
 
 // ── Usuarios ──────────────────────────────────────────────────────────
 export const usuarioApi = {
-  listar: () => peticion('usuarios'),
+  mostrar: () => peticion('usuarios'),
 };

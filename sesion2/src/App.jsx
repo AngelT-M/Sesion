@@ -11,23 +11,24 @@ function App() {
   const [tareas,     setTareas]     = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [usuarios,   setUsuarios]   = useState([]);
+  
   const [cargando,   setCargando]   = useState(true);
   const [error,      setError]      = useState(null);
 
-  // ── Control de modales ──────────────────────────────────────────────
-  const [modalNuevaAbierto,   setModalNuevaAbierto]   = useState(false);
-  const [tareaSeleccionada,   setTareaSeleccionada]   = useState(null);
-
   // ── Filtros ─────────────────────────────────────────────────────────
-  const [busqueda,        setBusqueda]        = useState('');
-  const [filtroPrioridad, setFiltroPrioridad] = useState('TODAS');
-  const [filtroCategoria, setFiltroCategoria] = useState('TODAS');
-  const [filtroUsuario,   setFiltroUsuario]   = useState('TODOS');
+  const [buscar,       setBuscar]       = useState('');
+  const [filPrioridad, setFilPrioridad] = useState('TODAS');
+  const [filCategoria, setFilCategoria] = useState('TODAS');
+  const [filUsuario,   setFilUsuario]   = useState('TODAS');
+
+  // ── Control de modales ──────────────────────────────────────────────
+  const [modalNueva, setModalNueva] = useState(false);
+  const [tareaSelecion, setTareasSelecion] = useState(null);
 
   // Aplica los 4 filtros sobre la lista completa de tareas
-  const tareasFiltradas = tareas.filter((t) => {
-    if (busqueda) {
-      const q = busqueda.toLowerCase();
+  const tareasFiltro = tareas.filter((t) => {
+    if (buscar) {
+      const q = buscar.toLowerCase();
       const hayCoincidencia =
         t.titulo?.toLowerCase().includes(q) ||
         t.descripcion?.toLowerCase().includes(q) ||
@@ -35,17 +36,17 @@ function App() {
         t.nom_usuario?.toLowerCase().includes(q);
       if (!hayCoincidencia) return false;
     }
-    if (filtroPrioridad !== 'TODAS'  && t.prioridad  !== filtroPrioridad)      return false;
-    if (filtroCategoria !== 'TODAS'  && String(t.categoria_id) !== String(filtroCategoria)) return false;
-    if (filtroUsuario   !== 'TODOS'  && String(t.usuario_id)   !== String(filtroUsuario))   return false;
+    if (filPrioridad !== 'TODAS' && t.prioridad !== filPrioridad) return false;
+    if (filCategoria !== 'TODAS' && String(t.categoria_id) !== String(filCategoria)) return false;
+    if (filUsuario !== 'TODAS' && String(t.usuario_id) !== String(filUsuario)) return false;
     return true;
   });
 
   function limpiarFiltros() {
-    setBusqueda('');
-    setFiltroPrioridad('TODAS');
-    setFiltroCategoria('TODAS');
-    setFiltroUsuario('TODOS');
+    setBuscar('');
+    setFilPrioridad('TODAS');
+    setFilCategoria('TODAS');
+    setFilUsuario('TODAS');
   }
 
   // ── Carga inicial de datos ──────────────────────────────────────────
@@ -53,42 +54,24 @@ function App() {
   useEffect(() => {
     async function cargar() {
       try {
-        const [listaTareas, listaCategorias, listaUsuarios] = await Promise.all([
-          tareaApi.listar(),
-          categoriaApi.listar(),
-          usuarioApi.listar(),
+        const [tareasMostradas, categoriasMostradas, usuariosMostrados] = await Promise.all([
+          tareaApi.mostrar(),
+          categoriaApi.mostrar(),
+          usuarioApi.mostrar(),
         ]);
-        setTareas(listaTareas);
-        setCategorias(listaCategorias);
-        setUsuarios(listaUsuarios);
-      } catch (e) {
+        setTareas(tareasMostradas);
+        setCategorias(categoriasMostradas);
+        setUsuarios(usuariosMostrados);
+      } 
+      catch (e) {
         setError(e.message);
-      } finally {
+      } 
+      finally {
         setCargando(false);
       }
     }
     cargar();
   }, []);
-
-  // ── CREAR tarea ─────────────────────────────────────────────────────
-  async function agregarTarea(nueva) {
-    try {
-      await tareaApi.crear({
-        titulo:         nueva.titulo,
-        descripcion:    nueva.descripcion,
-        categoria_id:   Number(nueva.categoria_id),
-        usuario_id:     1,
-        prioridad:      nueva.prioridad,
-        estado:         'PENDIENTE',
-        orden:          0,
-        fecha_creacion: new Date().toISOString().slice(0, 19).replace('T', ' '),
-      });
-      setTareas(await tareaApi.listar()); // recarga lista actualizada
-    } catch (e) {
-      setError(e.message);
-      throw e;
-    }
-  }
 
   // ── MOVER tarea (drag & drop entre columnas) ────────────────────────
   async function moverTarea(idTarea, nuevoEstado) {
@@ -111,31 +94,64 @@ function App() {
     }
   }
 
+  // ── CREAR tarea ─────────────────────────────────────────────────────
+  async function agregarTarea(nueva) {
+    try {
+      await tareaApi.crear({
+        titulo:         nueva.titulo,
+        descripcion:    nueva.descripcion,
+        categoria_id:   Number(nueva.categoria_id),
+        usuario_id:     Number(nueva.usuario_id),
+        prioridad:      nueva.prioridad,
+        estado:         'PENDIENTE',
+        orden:          0,
+        fecha_creacion: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      });
+      setTareas(await tareaApi.mostrar()); // recarga tareas actualizadas
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    }
+  }
+
   // ── EDITAR tarea ────────────────────────────────────────────────────
   async function editarTarea(idTarea, datos) {
     try {
       await tareaApi.actualizar(idTarea, datos);
-      setTareas(await tareaApi.listar());
-      setTareaSeleccionada(null); // cierra el modal
+      setTareas(await tareaApi.mostrar());
+      setTareasSelecion(null); // cierra el modal
     } catch (e) {
       setError(e.message);
     }
   }
+
+  async function eliminarTarea(idTarea) {
+    try {
+      await tareaApi.eliminar(idTarea);
+      setTareas(await tareaApi.mostrar());
+      setTareasSelecion(null);
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    }
+  }
+
+
 
   // ── Render ──────────────────────────────────────────────────────────
   return (
     <div className="app">
 
       <Header
-        onNuevaTarea={()  => setModalNuevaAbierto(true)}
-        busqueda={busqueda}           onCambiarBusqueda={setBusqueda}
-        filtroPrioridad={filtroPrioridad} onCambiarPrioridad={setFiltroPrioridad}
-        filtroCategoria={filtroCategoria} onCambiarCategoria={setFiltroCategoria}
-        filtroUsuario={filtroUsuario}     onCambiarUsuario={setFiltroUsuario}
+        onNuevaTarea={() => setModalNueva(true)}
+        buscar={buscar} onCambiarBuscar={setBuscar}
+        filPrioridad={filPrioridad} onCambiarPrioridad={setFilPrioridad}
+        filCategoria={filCategoria} onCambiarCategoria={setFilCategoria}
+        filUsuario={filUsuario} onCambiarUsuario={setFilUsuario}
         categorias={categorias}
         usuarios={usuarios}
         totalTareas={tareas.length}
-        totalFiltradas={tareasFiltradas.length}
+        totalFiltradas={tareasFiltro.length}
         onLimpiarFiltros={limpiarFiltros}
       />
 
@@ -145,7 +161,7 @@ function App() {
         <p className="msg-carga">Cargando tareas...</p>
       ) : (
         <>
-          {tareas.length > 0 && tareasFiltradas.length === 0 && (
+          {tareas.length > 0 && tareasFiltro.length === 0 && (
             <div className="sin-resultados">
               <p>🔍 Ninguna tarea coincide con los filtros.</p>
               <button className="btn btn-primario" onClick={limpiarFiltros}>
@@ -154,28 +170,30 @@ function App() {
             </div>
           )}
           <Tablero
-            tareas={tareasFiltradas}
-            onVerTarea={setTareaSeleccionada}
+            tareas={tareasFiltro}
+            onVerTarea={setTareasSelecion}
             onSoltarTarea={moverTarea}
           />
         </>
       )}
 
-      {modalNuevaAbierto && (
+      {modalNueva && (
         <ModalNuevaTarea
           categorias={categorias}
+          usuarios={usuarios}
           onCrear={agregarTarea}
-          onCerrar={() => setModalNuevaAbierto(false)}
+          onCerrar={() => setModalNueva(false)}
         />
       )}
 
-      {tareaSeleccionada && (
+      {tareaSelecion && (
         <ModalTarjetaTarea
-          tarea={tareaSeleccionada}
+          tarea={tareaSelecion}
           categorias={categorias}
           usuarios={usuarios}
           onActualizar={editarTarea}
-          onCerrar={() => setTareaSeleccionada(null)}
+          onEliminar={eliminarTarea}
+          onCerrar={() => setTareasSelecion(null)}
         />
       )}
 

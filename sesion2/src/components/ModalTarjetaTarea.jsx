@@ -1,5 +1,5 @@
 import { useState } from "react";
-export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [], onCerrar, onActualizar }) {
+export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [], onCerrar, onActualizar, onEliminar }) {
     const [editando, setEditando] = useState(false);
     const [titulo, setTitulo] = useState(tarea.titulo);
     const [descripcion, setDescripcion] = useState(tarea.descripcion);
@@ -14,7 +14,11 @@ export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [
 
 
     const [prioridad, setPrioridad] = useState(tarea.prioridad);
+    const [estado, setEstado] = useState(tarea.estado);
     const [guardando, setGuardando] = useState(false);
+    const [eliminando, setEliminando] = useState(false);
+    const [errorEliminar, setErrorEliminar] = useState(null);
+
     async function manejarGuardar(e) {
         e.preventDefault();
         if (!titulo.trim() || guardando) return;
@@ -26,11 +30,27 @@ export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [
                 categoria_id: Number(categoriaId),
                 usuario_id: Number(usuarioId),
                 prioridad: prioridad,
+                estado,
             });
         } finally {
             setGuardando(false);
         }
     }
+
+    async function manejarEliminar() {
+        if (!window.confirm(`¿Eliminar la tarea "${tarea.titulo}"?`)) return;
+
+        setEliminando(true);
+        setErrorEliminar(null);
+        try {
+            await onEliminar(tarea.tarea_id);
+        } catch (e) {
+            setErrorEliminar(e.message);
+        } finally {
+            setEliminando(false);
+        }
+    }
+
     return (
         <div className="modal-overlay" onClick={onCerrar}>
             <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
@@ -89,6 +109,18 @@ export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [
                             <option value="MEDIA">Media</option>
                             <option value="BAJA">Baja</option>
                         </select>
+
+                        <label htmlFor="edit-estado">Estado</label>
+                        <select
+                            id="edit-estado"
+                            value={estado}
+                            onChange={(e) => setEstado(e.target.value)}
+                        >
+                            <option value="PENDIENTE">Pendiente</option>
+                            <option value="EN_PROCESO">En Proceso</option>
+                            <option value="COMPLETADA">Completada</option>
+                        </select>
+
                         <div className="modal-acciones" style={{ marginTop: '16px' }}>
                             <button
                                 type="button"
@@ -119,11 +151,21 @@ export default function ModalTarjetaTarea({ tarea, categorias = [], usuarios = [
                         <p><strong>Estado:</strong> {tarea.estado}</p>
                         <p><strong>Usuario:</strong> {tarea.nom_usuario || 'Sin asignar'}</p>
                         <p><strong>Fecha de Creación:</strong> {tarea.fecha_creacion || 'No disponible'}</p>
+                        {errorEliminar && <p className="mensaje-api" role="alert">{errorEliminar}</p>}
                         <div className="modal-acciones" style={{ marginTop: '16px' }}>
+                            <button
+                                type="button"
+                                className="btn btn-cerrar"
+                                onClick={manejarEliminar}
+                                disabled={eliminando}
+                            >
+                                {eliminando ? "Eliminando..." : "Eliminar tarea"}
+                            </button>
                             <button
                                 type="button"
                                 className="btn btn-primario"
                                 onClick={() => setEditando(true)}
+                                disabled={eliminando}
                             >
                                 ✏️ Editar Tarea
                             </button>

@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function ModalNuevaTarea({
   estadoInicial,
   categorias,
+  usuarios,
   onCrear,
   onCerrar,
 }) {
@@ -11,13 +12,16 @@ export default function ModalNuevaTarea({
   const [categoriaId, setCategoriaId] = useState(
     String(categorias[0]?.categoria_id ?? '')
   );
+  const [usuarioId, setUsuarioId] = useState(
+    String(usuarios[0]?.usuario_id ?? '')
+  );
   const [prioridad, setPrioridad] = useState('MEDIA');
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState(null);
 
   async function manejarSubmit(evento) {
     evento.preventDefault();
-    if (!titulo.trim() || !categoriaId || guardando) return;
+    if (!titulo.trim() || !categoriaId || !usuarioId || guardando) return;
 
     setGuardando(true);
     setError(null);
@@ -26,9 +30,9 @@ export default function ModalNuevaTarea({
         titulo: titulo.trim(),
         descripcion: descripcion.trim(),
         categoria_id: categoriaId,
+        usuario_id: usuarioId,
         prioridad,
         estado: estadoInicial,
-        usuario: 'Sin asignar',
       });
       onCerrar();
     } catch (e) {
@@ -78,6 +82,20 @@ export default function ModalNuevaTarea({
             ))}
           </select>
 
+          <label htmlFor="tarea-usuario">Asignar a usuario</label>
+          <select
+            id="tarea-usuario"
+            value={usuarioId}
+            onChange={(e) => setUsuarioId(e.target.value)}
+            required
+          >
+            {usuarios.map((usuario) => (
+              <option key={usuario.usuario_id} value={usuario.usuario_id}>
+                {usuario.nom_usuario}
+              </option>
+            ))}
+          </select>
+
           <label htmlFor="tarea-prioridad">Prioridad</label>
           <select
             id="tarea-prioridad"
@@ -95,6 +113,11 @@ export default function ModalNuevaTarea({
               No hay categorías disponibles en la API.
             </p>
           )}
+          {!usuarios.length && (
+            <p className="mensaje-api" role="alert">
+              No hay usuarios disponibles en la API.
+            </p>
+          )}
 
           <div className="modal-acciones">
             <button
@@ -108,7 +131,7 @@ export default function ModalNuevaTarea({
             <button
               type="submit"
               className="btn btn-primario"
-              disabled={guardando || !categorias.length}
+              disabled={guardando || !categorias.length || !usuarios.length}
             >
               {guardando ? 'Guardando...' : 'Crear tarea'}
             </button>

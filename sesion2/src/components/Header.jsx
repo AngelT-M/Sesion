@@ -1,9 +1,9 @@
 export default function Header({
   onNuevaTarea,
-  busqueda, onCambiarBusqueda,
-  filtroPrioridad, onCambiarPrioridad,
-  filtroCategoria, onCambiarCategoria,
-  filtroUsuario, onCambiarUsuario,
+  buscar, onCambiarBuscar,
+  filPrioridad, onCambiarPrioridad,
+  filCategoria, onCambiarCategoria,
+  filUsuario, onCambiarUsuario,
   categorias = [], usuarios = [],
   totalTareas, totalFiltradas,
   onLimpiarFiltros,
@@ -11,10 +11,10 @@ export default function Header({
   const prioridades = ['TODAS', 'ALTA', 'MEDIA', 'BAJA'];
 
   const hayFiltros =
-    busqueda ||
-    filtroPrioridad !== 'TODAS' ||
-    filtroCategoria !== 'TODAS' ||
-    filtroUsuario !== 'TODOS';
+    buscar ||
+    filPrioridad !== 'TODAS' ||
+    filCategoria !== 'TODAS' ||
+    filUsuario !== 'TODAS';
 
   return (
     <header className="app-header">
@@ -29,11 +29,11 @@ export default function Header({
             className="buscador"
             type="text"
             placeholder="Buscar tarea..."
-            value={busqueda}
-            onChange={e => onCambiarBusqueda(e.target.value)}
+            value={buscar}
+            onChange={e => onCambiarBuscar(e.target.value)}
           />
-          {busqueda && (
-            <button className="btn-x" onClick={() => onCambiarBusqueda('')}>✕</button>
+          {buscar && (
+            <button className="btn-x" onClick={() => onCambiarBuscar('')}>✕</button>
           )}
         </div>
 
@@ -54,7 +54,7 @@ export default function Header({
           {prioridades.map(p => (
             <button
               key={p}
-              className={`pill ${filtroPrioridad === p ? 'pill-activo' : ''}`}
+              className={`pill ${filPrioridad === p ? 'pill-activo' : ''}`}
               onClick={() => onCambiarPrioridad(p)}
             >
               {p === 'TODAS' ? 'Todas' : p[0] + p.slice(1).toLowerCase()}
@@ -65,7 +65,7 @@ export default function Header({
         {/* Select de categoría */}
         <div className="filtro-grupo">
           <span className="filtro-label">📁 Categoría:</span>
-          <select className="filtro-select" value={filtroCategoria} onChange={e => onCambiarCategoria(e.target.value)}>
+          <select className="filtro-select" value={filCategoria} onChange={e => onCambiarCategoria(e.target.value)}>
             <option value="TODAS">Todas</option>
             {categorias.map(c => (
               <option key={c.categoria_id} value={c.categoria_id}>{c.nom_categoria}</option>
@@ -76,8 +76,8 @@ export default function Header({
         {/* Select de usuario */}
         <div className="filtro-grupo">
           <span className="filtro-label">👤 Usuario:</span>
-          <select className="filtro-select" value={filtroUsuario} onChange={e => onCambiarUsuario(e.target.value)}>
-            <option value="TODOS">Todos</option>
+          <select className="filtro-select" value={filUsuario} onChange={e => onCambiarUsuario(e.target.value)}>
+            <option value="TODAS">Todos</option>
             {usuarios.map(u => (
               <option key={u.usuario_id} value={u.usuario_id}>{u.nom_usuario}</option>
             ))}

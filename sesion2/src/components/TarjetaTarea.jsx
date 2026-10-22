@@ -4,7 +4,6 @@ const COLORES_PRIORIDAD = {
   MEDIA: "#f59e08",
   BAJA: "#16a34a",
 };
-
 function obtenerInicales(nombreCompleto) {
   return nombreCompleto
     .split(' ')
@@ -14,7 +13,6 @@ function obtenerInicales(nombreCompleto) {
 }
 
 export default function TarjetaTarea({ tarea, onVerTarea }) {
-
   function manejarDragStart(evento) {
     evento.dataTransfer.setData('text/plain', tarea.tarea_id);
   }
