@@ -1,5 +1,6 @@
 import { use, useEffect, useState } from 'react'
 import './App.css'
+import { categoriaApi, tareaApi, usuarioApi } from './services/api';
 
 
 function App() {
@@ -46,10 +47,24 @@ function App() {
   useEffect(()=>{
     async function cargar() {
       try{
-        
+        const [tareasMostradas, categoriasMostradas, usuariosMostradas]= await Promise.all([
+          tareaApi.mostrar(),
+          categoriaApi.mostrar(),
+          usuarioApi.mostrar(),
+        ]);
+        setTareas(tareasMostradas);
+        setCategorias(categoriasMostradas);
+        setUsuarios(usuariosMostradas);
+      }
+      catch(e){
+        setError(e.message);
+      }
+      finally{
+        setCargando(false);
       }
     }
-  })
+    cargar();
+  },[]);
 
 
 
