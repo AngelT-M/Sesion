@@ -43,10 +43,10 @@ function App() {
   });
 
   function limpiarFiltros() {
-    setBuscar('');
-    setFilPrioridad('TODAS');
-    setFilCategoria('TODAS');
-    setFilUsuario('TODAS');
+    setBuscar('')
+    setFilPrioridad('TODAS')
+    setFilCategoria('TODAS')
+    setFilUsuario('TODAS')
   }
 
   // ── Carga inicial de datos ──────────────────────────────────────────
@@ -169,6 +169,7 @@ function App() {
               </button>
             </div>
           )}
+          
           <Tablero
             tareas={tareasFiltro}
             onVerTarea={setTareasSelecion}

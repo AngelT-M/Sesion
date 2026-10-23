@@ -8,7 +8,7 @@ const porPrioridad = (a, b) =>
 const COLUMNAS = [
   { titulo: 'Pendiente', estado: 'PENDIENTE', color: '#2563eb' },
   { titulo: 'En Proceso', estado: 'EN_PROCESO', color: '#f59e08' },
-  { titulo: 'Completadas', estado: 'COMPLETADA', color: '#16a34a' },
+  { titulo: 'Completadas', estado: 'COMPLETA', color: '#16a34a' },
 ];
 
 export default function Tablero({ tareas, onVerTarea, onSoltarTarea }) {

@@ -1,13 +1,13 @@
 // URL base de la API — cámbiala según tu proyecto
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost/fs2026/tableroKanbanClase/public/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost/fs2026/tablero_kanban/public/api';
 
 // ── Función genérica que hace todas las peticiones HTTP ──────────────
 async function peticion(ruta, { metodo = 'GET', datos } = {}) {
 
   const respuesta = await fetch(`${BASE_URL}/${ruta}`, {
     method: metodo,
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: datos ? JSON.stringify(datos) : undefined,
+    headers: { 'Content-Type': 'Application/json', Accept: 'Application/json' },
+    body: datos ? JSON.stringify(datos) : undefined
   }).catch(() => { 
     throw new Error('No se pudo conectar con el servidor'); 
   });
